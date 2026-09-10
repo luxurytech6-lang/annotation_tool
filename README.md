@@ -74,7 +74,8 @@ annotation_tool/
 ├── seed_data.py             Starter use-category list
 ├── models/
 │   ├── similarity.py        Tier 1: MobileNetV2 embeddings + cosine similarity
-│   └── plantnet.py          Tier 2: PlantNet API fallback
+│   └── plantnet.py 
+|--- seed_dataset         Tier 2: PlantNet API fallback
 ├── static/
 │   ├── style.css
 │   └── uploads/              Uploaded image files land here
