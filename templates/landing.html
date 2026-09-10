@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Urhobo Plant Archive{% endblock %}
+{% block content %}
+<div class="landing">
+
+  <div class="hero landing-section">
+    <div class="hero-copy">
+      <h1>A field record for the plants that hold Urhobo medicine.</h1>
+      <p>Photograph a leaf, bark, or flower, confirm what it is, and tag what it treats — building an archive of local plant knowledge as you work through the collection.</p>
+      <div class="hero-actions">
+        <a href="{{ url_for('upload') }}" class="btn-green">Start uploading</a>
+        <a href="{{ url_for('browse') }}" class="btn-text">Browse what's recorded</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg class="leaf-svg" width="200" height="240" viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg">
+        <path class="outline" d="M110 10 C 170 40, 205 100, 178 165 C 155 220, 110 250, 110 250 C 110 250, 65 220, 42 165 C 15 100, 50 40, 110 10 Z" />
+        <path class="vein" d="M110 20 L110 245" />
+        <path class="vein" d="M110 70 C 90 78, 75 90, 65 105" />
+        <path class="vein" d="M110 70 C 130 78, 145 90, 155 105" />
+        <path class="vein" d="M110 120 C 90 128, 78 140, 70 155" />
+        <path class="vein" d="M110 120 C 130 128, 142 140, 150 155" />
+        <path class="vein" d="M110 170 C 96 176, 87 185, 80 196" />
+        <path class="vein" d="M110 170 C 124 176, 133 185, 140 196" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="steps-list" style="margin-bottom:56px;">
+    <div class="step">
+      <div class="landing-num">01</div>
+      <div>
+        <h3>Upload a photo</h3>
+        <p>Choose a picture of a leaf, bark, flower, or the whole plant — JPG or PNG, taken in the field or from your files.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="landing-num">02</div>
+      <div>
+        <h3>Check the suggestion</h3>
+        <p>The tool compares it against everything annotated so far, and asks PlantNet if nothing local matches, to suggest a species before you confirm anything.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="landing-num">03</div>
+      <div>
+        <h3>Confirm and tag it</h3>
+        <p>Accept the suggestion or add a new species, record its Urhobo name, and tag what it's used to treat with a confidence rating for each use.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="landing-num">04</div>
+      <div>
+        <h3>Browse and export</h3>
+        <p>Every entry is searchable by species or name, and the full record can be exported as CSV or JSON once it's ready to leave the tool.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-block landing-section">
+    "Every entry here ties a photograph to a name in Urhobo, a name in Latin where one exists, and the ailments it's known to treat — a record built to outlast any single fieldwork season."
+  </div>
+
+</div>
+{% endblock %}

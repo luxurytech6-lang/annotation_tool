@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Annotate{% endblock %}
+{% block content %}
+<div class="card">
+  <div style="display:flex; gap:16px; margin-bottom:16px;">
+    <div class="thumb" style="width:110px; height:110px; flex-shrink:0;">
+      <img src="{{ url_for('static', filename='uploads/' + image['filename']) }}" alt="">
+    </div>
+    <div>
+      {% if suggestion_label %}
+        <div class="muted" style="margin-bottom:4px;">Suggested species</div>
+        <div style="font-weight:700; margin-bottom:6px;">{{ suggestion_label }}</div>
+        {% if suggestion_source == 'local' %}
+          <span class="badge badge-green">local match, {{ (image['suggestion_score'] * 100) | round | int }}% confidence</span>
+        {% else %}
+          <span class="badge badge-amber">online match (species only)</span>
+        {% endif %}
+      {% else %}
+        <div class="muted" style="margin-bottom:4px;">Suggested species</div>
+        <div class="badge badge-amber">no confident match &mdash; enter manually</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <form method="post">
+    <label class="label">Species</label>
+    <select name="species_choice" id="species_choice" onchange="toggleNewSpecies()">
+      <option value="">Select species&hellip;</option>
+      {% for p in plants %}
+        <option value="{{ p['species_id'] }}" {% if suggestion_label == p['common_name'] %}selected{% endif %}>{{ p['common_name'] }}</option>
+      {% endfor %}
+      <option value="__new__" {% if not plants %}selected{% endif %}>Enter manually&hellip;</option>
+    </select>
+
+    <div id="new_species_fields" style="display:none;">
+      <label class="label">New species name</label>
+      <input type="text" name="new_species_name" value="{{ suggestion_label if suggestion_source == 'api' else '' }}" placeholder="e.g. Vernonia amygdalina">
+      <label class="label">Scientific name (optional)</label>
+      <input type="text" name="scientific_name" placeholder="Genus species">
+    </div>
+
+    <label class="label">Urhobo name</label>
+    <input type="text" name="urhobo_name" placeholder="Local Urhobo name">
+
+    <label class="label">Image type</label>
+    <select name="image_type" required>
+      <option value="">Select type&hellip;</option>
+      <option value="leaf">Leaf</option>
+      <option value="bark">Bark</option>
+      <option value="flower">Flower</option>
+      <option value="whole_plant">Whole plant</option>
+    </select>
+
+    <label class="label">Labeller name</label>
+    <input type="text" name="labeller" value="{{ image['labeller'] or '' }}" placeholder="Your name">
+
+    <div class="divider"></div>
+    <div class="label" style="margin-bottom:10px;">Medicinal use tags</div>
+
+    <div id="tag-list">
+      {% for tag in existing_tags %}
+      <div class="tag-row">
+        <select name="category_id[]">
+          {% for c in categories %}
+            <option value="{{ c['category_id'] }}" {% if c['category_id'] == tag['category_id'] %}selected{% endif %}>{{ c['name'] }}</option>
+          {% endfor %}
+        </select>
+        <select name="effectiveness_rating[]">
+          {% for r in ratings %}
+            <option value="{{ r }}" {% if r == tag['effectiveness_rating'] %}selected{% endif %}>{{ r }}</option>
+          {% endfor %}
+        </select>
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove()">&times;</button>
+      </div>
+      {% endfor %}
+    </div>
+
+    <button type="button" class="btn" onclick="addTagRow()">+ Add use tag</button>
+
+    <div class="divider"></div>
+    <button type="submit" class="btn-block">Save annotation</button>
+  </form>
+</div>
+
+<template id="tag-row-template">
+  <div class="tag-row">
+    <select name="category_id[]">
+      <option value="">Select use&hellip;</option>
+      {% for c in categories %}
+        <option value="{{ c['category_id'] }}">{{ c['name'] }}</option>
+      {% endfor %}
+    </select>
+    <select name="effectiveness_rating[]">
+      {% for r in ratings %}
+        <option value="{{ r }}">{{ r }}</option>
+      {% endfor %}
+    </select>
+    <button type="button" class="remove-btn" onclick="this.parentElement.remove()">&times;</button>
+  </div>
+</template>
+
+<script>
+function addTagRow() {
+  const tpl = document.getElementById('tag-row-template');
+  const clone = tpl.content.cloneNode(true);
+  document.getElementById('tag-list').appendChild(clone);
+}
+function toggleNewSpecies() {
+  const sel = document.getElementById('species_choice');
+  document.getElementById('new_species_fields').style.display =
+    sel.value === '__new__' ? 'block' : 'none';
+}
+toggleNewSpecies();
+{% if not existing_tags %}addTagRow();{% endif %}
+</script>
+{% endblock %}

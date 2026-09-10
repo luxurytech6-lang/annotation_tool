@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Browse{% endblock %}
+{% block content %}
+<div class="card">
+  <form method="get" class="filters">
+    <input type="text" name="q" value="{{ search }}" placeholder="Search species or Urhobo name">
+    <select name="species_id" onchange="this.form.submit()">
+      <option value="">All species</option>
+      {% for p in plants %}
+        <option value="{{ p['species_id'] }}" {% if species_filter == p['species_id']|string %}selected{% endif %}>{{ p['common_name'] }}</option>
+      {% endfor %}
+    </select>
+    <select name="status" onchange="this.form.submit()">
+      <option value="">All status</option>
+      <option value="annotated" {% if status_filter == 'annotated' %}selected{% endif %}>Annotated</option>
+      <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+    </select>
+    <button type="submit">Search</button>
+  </form>
+
+  {% if images %}
+  <div class="grid">
+    {% for img in images %}
+    <a href="{{ url_for('annotate', image_id=img['image_id']) }}" style="text-decoration:none; color:inherit;">
+      <div class="thumb">
+        <img src="{{ url_for('static', filename='uploads/' + img['filename']) }}" alt="">
+        {% if img['status'] == 'annotated' %}
+          <span class="badge badge-green">done</span>
+        {% else %}
+          <span class="badge badge-amber">pending</span>
+        {% endif %}
+      </div>
+      <div class="thumb-caption">{{ img['common_name'] or 'Unlabeled' }}</div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="muted">No images match these filters yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

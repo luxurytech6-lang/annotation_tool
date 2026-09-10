@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Admin panel{% endblock %}
+{% block content %}
+<div class="card">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+    <div class="title" style="margin-bottom:0;">Admin panel</div>
+    <span class="badge badge-purple">admin mode</span>
+  </div>
+
+  <div class="label">Use categories</div>
+  <div class="list-box">
+    {% for c in categories %}
+    <div class="list-row">
+      <span>{{ c['name'] }}</span>
+      <form method="post" action="{{ url_for('admin_delete_category', category_id=c['category_id']) }}" onsubmit="return confirm('Remove this category?');">
+        <button type="submit" style="border:none; background:none; color:#B4B2A9; font-size:12px; cursor:pointer;">remove</button>
+      </form>
+    </div>
+    {% else %}
+    <div class="list-row"><span class="muted">No categories yet.</span></div>
+    {% endfor %}
+  </div>
+
+  <form method="post" style="display:flex; gap:8px; margin-bottom:24px;">
+    <input type="text" name="name" placeholder="New use category" style="flex:1;">
+    <button type="submit" class="btn-green">+ Add category</button>
+  </form>
+
+  <div class="label">Flagged for review</div>
+  <div class="list-box">
+    {% for img in flagged %}
+    <a href="{{ url_for('annotate', image_id=img['image_id']) }}" style="text-decoration:none; color:inherit;">
+      <div class="list-row">
+        <span>{{ img['filename'] }}</span>
+        {% if img['status'] == 'pending' and img['suggested_species_id'] is none %}
+          <span class="badge badge-amber">no species match</span>
+        {% else %}
+          <span class="badge badge-amber">low confidence</span>
+        {% endif %}
+      </div>
+    </a>
+    {% else %}
+    <div class="list-row"><span class="muted">Nothing flagged right now.</span></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+Flask==3.0.3
+Werkzeug==3.0.3
+Pillow==10.4.0
+numpy==1.26.4
+requests==2.32.3
+
+# Tier 1 species suggestion (local reference library).
+# The app runs fine without these -- upload/annotate/browse/export all
+# work -- but species auto-suggestion falls straight through to manual
+# entry until these are installed.
+torch==2.3.1
+torchvision==0.18.1

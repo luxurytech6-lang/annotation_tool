@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Upload{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="title">Upload plant image</div>
+  <form method="post" enctype="multipart/form-data">
+    <label class="label">Labeller name</label>
+    <input type="text" name="labeller" placeholder="Your name">
+
+    <div class="dropzone">
+      <div style="font-size:28px; color:#3D6B2A; margin-bottom:8px; line-height:1;">🌿</div>
+      <div style="font-weight:600; margin-bottom:4px; color:#2F4A22;">Choose a plant image</div>
+      <div class="muted" style="margin-bottom:14px;">Leaf, bark, flower, or whole plant · JPG or PNG · up to 10&nbsp;MB</div>
+      <input type="file" name="image" accept=".jpg,.jpeg,.png" required>
+    </div>
+
+    <button type="submit" class="btn-green btn-block">Upload &amp; suggest species</button>
+  </form>
+</div>
+
+{% if recent %}
+<div style="margin-top:28px;">
+  <div class="label" style="margin-bottom:12px;">Recently uploaded</div>
+  <div class="grid">
+    {% for img in recent %}
+    <div>
+      <div class="thumb">
+        <img src="{{ url_for('static', filename='uploads/' + img['filename']) }}" alt="">
+        {% if img['status'] == 'annotated' %}
+          <span class="badge badge-green">annotated</span>
+        {% else %}
+          <span class="badge badge-amber">pending</span>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

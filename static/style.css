@@ -1,0 +1,707 @@
+/* ============================================================
+   Ethno-Botanical Annotation Tool
+   Nature / agricultural field-notebook aesthetic
+   ============================================================ */
+
+:root {
+  /* Earth & leaf palette */
+  --soil:        #3D2B1F;
+  --bark:        #5C4033;
+  --moss:        #2F4A22;
+  --leaf:        #3D6B2A;
+  --leaf-mid:    #5A8F3D;
+  --leaf-soft:   #8FBC6B;
+  --sage:        #C5D9B0;
+  --cream:       #F7F4EC;
+  --parchment:   #FBF8F1;
+  --paper:       #FFFEF9;
+  --wheat:       #E8DFC8;
+  --clay:        #D4C4A8;
+  --amber:       #C4782A;
+  --amber-soft:  #F5E6C8;
+  --ink:         #2A241C;
+  --muted:       #6B6358;
+  --line:        #E2D9C8;
+  --line-soft:   #EDE6D8;
+
+  --radius:      12px;
+  --radius-sm:   8px;
+  --shadow-soft: 0 1px 2px rgba(61, 43, 31, 0.04), 0 4px 16px rgba(61, 43, 31, 0.06);
+  --shadow-card: 0 2px 4px rgba(61, 43, 31, 0.05), 0 8px 24px rgba(61, 43, 31, 0.07);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.5;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Subtle paper texture + soft green wash */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 120% 80% at 10% -20%, rgba(143, 188, 107, 0.12), transparent 50%),
+    radial-gradient(ellipse 80% 60% at 90% 100%, rgba(197, 217, 176, 0.18), transparent 45%),
+    linear-gradient(180deg, #F9F6EE 0%, #F4F0E4 100%);
+  pointer-events: none;
+}
+
+/* ---------- Navigation ---------- */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 28px;
+  background: rgba(255, 254, 249, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.6);
+}
+
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s;
+}
+
+nav a:hover {
+  color: var(--moss);
+  background: rgba(197, 217, 176, 0.35);
+}
+
+nav a.active {
+  color: var(--moss);
+  background: rgba(197, 217, 176, 0.5);
+}
+
+nav .brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 700;
+  font-size: 15.5px;
+  color: var(--soil);
+  margin-right: auto;
+  padding: 4px 8px 4px 4px;
+  letter-spacing: -0.01em;
+}
+
+nav .brand:hover {
+  background: transparent;
+  color: var(--moss);
+}
+
+.brand-leaf {
+  display: flex;
+  color: var(--leaf);
+  flex-shrink: 0;
+}
+
+.nav-muted {
+  opacity: 0.7;
+  font-weight: 500;
+  font-size: 12.5px !important;
+}
+
+/* ---------- Main layout ---------- */
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--paper);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  padding: 26px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 16px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--leaf-soft), var(--sage), transparent);
+  border-radius: 0 0 2px 2px;
+  opacity: 0.55;
+}
+
+.title {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--soil);
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.label {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 6px;
+  margin-top: 14px;
+}
+
+.label:first-child { margin-top: 0; }
+
+/* ---------- Form controls ---------- */
+input[type=text],
+input[type=password],
+input[type=file],
+select,
+textarea {
+  width: 100%;
+  height: 40px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--parchment);
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+input[type=file] {
+  padding: 8px;
+  height: auto;
+  background: var(--paper);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--leaf-mid);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(90, 143, 61, 0.18);
+}
+
+/* ---------- Buttons ---------- */
+button, .btn {
+  border: 1.5px solid var(--clay);
+  border-radius: var(--radius-sm);
+  padding: 10px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--bark);
+  background: var(--paper);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+button:hover, .btn:hover {
+  background: var(--wheat);
+  border-color: var(--clay);
+}
+
+button:active, .btn:active {
+  transform: translateY(1px);
+}
+
+.btn-green {
+  background: linear-gradient(180deg, #E8F2D8 0%, #D4E8BC 100%);
+  border-color: #8FB86A;
+  color: var(--moss);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
+}
+
+.btn-green:hover {
+  background: linear-gradient(180deg, #DDEFC9 0%, #C8E0A8 100%);
+  border-color: var(--leaf-mid);
+}
+
+.btn-block {
+  width: 100%;
+  text-align: center;
+  padding: 12px 18px;
+  font-size: 14.5px;
+}
+
+.btn-text {
+  background: transparent;
+  border-color: transparent;
+  color: var(--leaf);
+  font-weight: 600;
+}
+
+.btn-text:hover {
+  background: rgba(197, 217, 176, 0.3);
+  border-color: transparent;
+  color: var(--moss);
+}
+
+/* ---------- Dropzone ---------- */
+.dropzone {
+  border: 2px dashed var(--leaf-soft);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(234, 243, 222, 0.55) 0%, rgba(197, 217, 176, 0.25) 100%);
+  padding: 36px 20px;
+  text-align: center;
+  margin: 14px 0 22px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.dropzone:hover {
+  border-color: var(--leaf-mid);
+  background: linear-gradient(180deg, rgba(234, 243, 222, 0.75) 0%, rgba(197, 217, 176, 0.4) 100%);
+}
+
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.badge-green {
+  background: #E4F0D4;
+  color: var(--moss);
+  border: 1px solid rgba(143, 188, 107, 0.35);
+}
+
+.badge-amber {
+  background: var(--amber-soft);
+  color: #8A4F0F;
+  border: 1px solid rgba(196, 120, 42, 0.25);
+}
+
+.badge-purple {
+  background: #EDEAF8;
+  color: #4A3F8A;
+  border: 1px solid rgba(90, 80, 160, 0.2);
+}
+
+/* ---------- Flash messages ---------- */
+.flash {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  margin-bottom: 16px;
+  border: 1px solid transparent;
+}
+
+.flash-success {
+  background: #E8F2D8;
+  color: var(--moss);
+  border-color: rgba(143, 188, 107, 0.4);
+}
+
+.flash-error {
+  background: #FCEBEB;
+  color: #7A1F1F;
+  border-color: rgba(180, 60, 60, 0.25);
+}
+
+/* ---------- Image grid & thumbs ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+  gap: 14px;
+}
+
+.thumb {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background: var(--wheat);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+a:hover .thumb {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(61, 43, 31, 0.12);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb .badge {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+}
+
+.thumb-caption {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* ---------- Divider ---------- */
+.divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line), transparent);
+  margin: 20px 0;
+}
+
+/* ---------- Tag rows ---------- */
+.tag-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.tag-row select:first-child { flex: 1; }
+.tag-row select { width: 110px; }
+
+.tag-row .remove-btn {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  color: var(--muted);
+  border-color: var(--line);
+  font-size: 16px;
+  line-height: 1;
+}
+
+.tag-row .remove-btn:hover {
+  background: #FCEBEB;
+  border-color: #E8A0A0;
+  color: #7A1F1F;
+}
+
+/* ---------- Filters ---------- */
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filters input,
+.filters select {
+  width: auto;
+  flex: 1;
+  min-width: 140px;
+}
+
+.filters button {
+  background: linear-gradient(180deg, #E8F2D8 0%, #D4E8BC 100%);
+  border-color: #8FB86A;
+  color: var(--moss);
+}
+
+/* ---------- Metrics ---------- */
+.metric-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.metric {
+  flex: 1;
+  background: var(--parchment);
+  border-radius: 10px;
+  padding: 14px;
+  border: 1px solid var(--line-soft);
+}
+
+.metric.green {
+  background: linear-gradient(160deg, #EAF3DE 0%, #D8EBC4 100%);
+  border-color: rgba(143, 188, 107, 0.35);
+}
+
+.metric-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.metric.green .metric-label { color: var(--moss); }
+
+.metric-num {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--soil);
+  letter-spacing: -0.02em;
+}
+
+.metric.green .metric-num { color: var(--moss); }
+
+/* ---------- Tables ---------- */
+table.preview {
+  width: 100%;
+  font-size: 13px;
+  border-collapse: collapse;
+}
+
+table.preview th {
+  text-align: left;
+  color: var(--muted);
+  padding: 4px 8px 10px 0;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+table.preview td {
+  padding: 9px 8px 9px 0;
+  border-top: 1px solid var(--line-soft);
+  color: var(--ink);
+}
+
+/* ---------- List boxes ---------- */
+.list-box {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  background: var(--parchment);
+}
+
+.list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line-soft);
+  transition: background 0.12s;
+}
+
+.list-row:last-child { border-bottom: none; }
+
+.list-row:hover {
+  background: rgba(234, 243, 222, 0.4);
+}
+
+/* ---------- Lock icon (admin login) ---------- */
+.lock-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #EAF3DE 0%, #D4E8BC 100%);
+  border: 1.5px solid rgba(143, 188, 107, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin: 0 auto 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.center { text-align: center; }
+
+.muted {
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  text-align: center;
+  padding: 24px 20px 36px;
+  font-size: 12px;
+  color: var(--muted);
+  opacity: 0.75;
+  font-style: italic;
+}
+
+/* ============================================================
+   Landing page
+   ============================================================ */
+
+.landing {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.landing-section {
+  margin-bottom: 56px;
+}
+
+.hero {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+  margin-bottom: 64px;
+}
+
+.hero-copy h1 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.22;
+  color: var(--soil);
+  letter-spacing: -0.025em;
+  margin-bottom: 14px;
+}
+
+.hero-copy p {
+  font-size: 15.5px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 22px;
+  max-width: 38ch;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.hero-art {
+  flex-shrink: 0;
+}
+
+.leaf-svg {
+  filter: drop-shadow(0 8px 20px rgba(61, 107, 42, 0.15));
+}
+
+.leaf-svg .outline {
+  fill: #EAF3DE;
+  stroke: var(--leaf);
+  stroke-width: 2.2;
+}
+
+.leaf-svg .vein {
+  fill: none;
+  stroke: var(--leaf-mid);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  opacity: 0.75;
+}
+
+/* Steps */
+.steps-list {
+  display: grid;
+  gap: 0;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line-soft);
+  align-items: start;
+}
+
+.step:first-child { padding-top: 0; }
+.step:last-child { border-bottom: none; padding-bottom: 0; }
+
+.landing-num {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--leaf-soft);
+  line-height: 1.2;
+  padding-top: 2px;
+}
+
+.step h3 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 17px;
+  font-weight: 650;
+  color: var(--soil);
+  margin-bottom: 4px;
+}
+
+.step p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Quote / note block */
+.note-block {
+  background: linear-gradient(135deg, #F0F5E6 0%, #E8F0D8 100%);
+  border: 1px solid rgba(143, 188, 107, 0.35);
+  border-left: 4px solid var(--leaf);
+  border-radius: 0 12px 12px 0;
+  padding: 22px 26px;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--moss);
+  line-height: 1.55;
+  box-shadow: var(--shadow-soft);
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 640px) {
+  nav {
+    padding: 12px 16px;
+    gap: 2px;
+    flex-wrap: wrap;
+  }
+
+  nav .brand {
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  main { padding: 24px 16px 40px; }
+
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    gap: 28px;
+  }
+
+  .hero-copy h1 { font-size: 26px; }
+  .hero-copy p { margin-left: auto; margin-right: auto; }
+  .hero-actions { justify-content: center; }
+
+  .leaf-svg { width: 160px; height: auto; }
+
+  .metric-row { flex-direction: column; }
+  .filters { flex-direction: column; }
+  .filters input, .filters select { width: 100%; }
+}

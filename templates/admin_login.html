@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Admin login{% endblock %}
+{% block content %}
+<div class="card center" style="max-width:360px; margin:0 auto;">
+  <div class="lock-icon">&#128274;</div>
+  <div class="title" style="text-align:center;">Admin access</div>
+  <p class="muted" style="margin-bottom:16px;">Enter the shared admin passcode to manage categories, review flagged images, and export the dataset.</p>
+  <form method="post">
+    <input type="password" name="passcode" placeholder="Passcode" autofocus style="text-align:center;">
+    <div style="margin-top:14px;">
+      <button type="submit" class="btn-green btn-block">Unlock admin panel</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
