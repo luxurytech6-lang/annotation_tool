@@ -6,7 +6,7 @@ requests==2.32.3
 
 # Tier 1 species suggestion (local reference library).
 # The app runs fine without these -- upload/annotate/browse/export all
-# work -- but species auto-suggestion falls straight through to manual
+# work --but species auto-suggestion falls straight through to manual
 # entry until these are installed.
 torch==2.3.1
 torchvision==0.18.1

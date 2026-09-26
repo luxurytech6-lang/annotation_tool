@@ -2,7 +2,7 @@
 Seeds the database with a starter, fixed-but-extensible list of medicinal
 use categories. Run once after creating the DB:
 
-    python seed_data.py
+  
 
 Edit STARTER_CATEGORIES below to match your fieldwork/grant proposal list.
 New categories can also be added later straight through the DB (or a small

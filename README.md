@@ -8,7 +8,7 @@ access split.
 
 ## Quick start
 
-```bash
+
 cd annotation_tool
 python -m venv venv
 source venv/bin/activate          # Windows: venv\Scripts\activate
@@ -18,7 +18,6 @@ pip install -r requirements.txt   # torch/torchvision are optional --
                                    # faster install without them
 
 cp .env.example .env
-# edit .env: set SECRET_KEY and ADMIN_PASSCODE at minimum
 
 export FLASK_APP=app.py           # Windows: set FLASK_APP=app.py
 flask init-db                     # creates database.db from schema.sql
