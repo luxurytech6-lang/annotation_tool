@@ -4,7 +4,10 @@
 <div class="card">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
     <div class="title" style="margin-bottom:0;">Admin panel</div>
-    <span class="badge badge-purple">admin mode</span>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <a href="{{ url_for('admin_export') }}" class="btn" style="font-size:13px;">Export dataset</a>
+      <span class="badge badge-purple">admin mode</span>
+    </div>
   </div>
 
   <div class="label">Use categories</div>
