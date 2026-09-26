@@ -9,7 +9,7 @@ class Config:
     ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
     MAX_CONTENT_LENGTH = 10 * 1024 * 1024  # 10MB
 
-    # Shared admin passcode (see access model decision: no per-user accounts,
+    
     # just a shared passcode that gates category/species management and export).
     ADMIN_PASSCODE = os.environ.get("ADMIN_PASSCODE", "changeme")
 
