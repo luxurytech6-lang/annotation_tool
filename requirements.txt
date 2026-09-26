@@ -10,3 +10,5 @@ requests==2.32.3
 # entry until these are installed.
 torch==2.3.1
 torchvision==0.18.1
+
+#file upload and storage
